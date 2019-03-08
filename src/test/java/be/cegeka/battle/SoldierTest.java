@@ -42,4 +42,20 @@ public class SoldierTest {
 
         assertThat(attacker.attack(attackee)).isTrue();
     }
+
+    @Test
+    public void attack_givenASoldierAttacksSoldierWithWeakerWeapon_thenAttackerWins() {
+        Soldier attacker = new Soldier("attacker", WeaponType.SPEAR);
+        Soldier attackee = new Soldier("attackee");
+
+        assertThat(attacker.attack(attackee)).isTrue();
+    }
+
+    @Test
+    public void attack_givenASoldierAttacksSoldierWithStrongerWeapon_thenAttackerLoses() {
+        Soldier attacker = new Soldier("attackee");
+        Soldier attackee = new Soldier("attacker", WeaponType.SPEAR);
+
+        assertThat(attacker.attack(attackee)).isFalse();
+    }
 }
