@@ -10,8 +10,8 @@ public enum WeaponType {
     SPEAR(2),
     BARE_FIST(1),
     TWO_HANDED_SWORD(5),
-    BROAD_AXE(5),
-    TRIDENT(6),
+    BROAD_AXE(2 + AXE.strength.get()),
+    TRIDENT(3 + SPEAR.strength.get()),
     MAGIC_POTION()
     ;
 
