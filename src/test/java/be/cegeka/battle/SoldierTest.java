@@ -28,4 +28,11 @@ public class SoldierTest {
         new Soldier("   ");
     }
 
+    @Test
+    public void construction_ASoldierHasBareFistWeaponByDefault() {
+        Soldier soldier = new Soldier("name");
+
+        assertThat(soldier.getWeaponType()).isEqualTo(WeaponType.BARE_FIST);
+    }
+
 }
