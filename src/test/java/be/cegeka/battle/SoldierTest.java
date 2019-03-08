@@ -35,4 +35,11 @@ public class SoldierTest {
         assertThat(soldier.getWeaponType()).isEqualTo(WeaponType.BARE_FIST);
     }
 
+    @Test
+    public void attack_givenASoldierAttacksSoldierWithSameWeapon_thenAttackerWins() {
+        Soldier attacker = new Soldier("attacker");
+        Soldier attackee = new Soldier("attackee");
+
+        assertThat(attacker.attack(attackee)).isTrue();
+    }
 }

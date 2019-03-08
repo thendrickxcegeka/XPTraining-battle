@@ -23,4 +23,8 @@ public class Soldier {
     public WeaponType getWeaponType() {
         return weaponType;
     }
+
+    public boolean attack(Soldier attackee) {
+        return this.getWeaponType().isStrongerOrEquallyStrong(attackee.getWeaponType());
+    }
 }
