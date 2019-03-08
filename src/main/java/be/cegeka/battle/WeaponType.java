@@ -1,30 +1,79 @@
 package be.cegeka.battle;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Optional;
+
 public enum WeaponType {
-    AXE(new BasicStrength(3)),
-    SWORD(new BasicStrength(2)),
-    SPEAR(new BasicStrength(2)),
-    BARE_FIST(new BasicStrength(1)),
-    TWO_HANDED_SWORD(new BasicStrength(5)),
-    BROAD_AXE(new BasicStrength(5)),
-    TRIDENT(new BasicStrength(6)),
-    MAGIC_POTION(new MagicPotionStrength())
+    AXE(3),
+    SWORD(2),
+    SPEAR(2),
+    BARE_FIST(1),
+    TWO_HANDED_SWORD(5),
+    BROAD_AXE(5),
+    TRIDENT(6),
+    MAGIC_POTION()
     ;
 
-    private final Strength strength;
+    private final Optional<Integer> strength;
 
-    WeaponType(Strength strength) {
-        this.strength = strength;
+    WeaponType(int strength) {
+        this.strength = Optional.of(strength);
     }
 
-    protected int getStrength(Strength otherStrength) {
-        return strength.getStrength(otherStrength);
+    WeaponType() {
+        this.strength = Optional.empty();
+    }
+
+    protected Optional<Integer> getStrength() {
+        return strength;
+    }
+
+    public Pair<Integer, Integer> getStrengths(WeaponType otherWeaponType) {
+        int thisStrength = getBasicStrength(this);
+        int otherStrength = getBasicStrength(otherWeaponType);
+
+        thisStrength += getPotionStrength(this, otherWeaponType);
+        otherStrength += getPotionStrength(otherWeaponType, this);
+
+        thisStrength += getSpecificationStrength(this, otherWeaponType);
+
+        return Pair.of(thisStrength, otherStrength);
+    }
+
+    private int getSpecificationStrength(WeaponType weaponType, WeaponType otherWeaponType) {
+        if(AXE.equals(weaponType) && SPEAR.equals(otherWeaponType)) {
+            return 3;
+        }
+        if(SPEAR.equals(weaponType) && SWORD.equals(otherWeaponType)) {
+            return 3;
+        }
+        if(SWORD.equals(weaponType) && AXE.equals(otherWeaponType)) {
+            return 3;
+        }
+        return 0;
     }
 
     public boolean isStrongerOrEquallyStrong(WeaponType otherWeaponType) {
         if(this.equals(otherWeaponType)) {
             return true;
         }
-        return this.getStrength(otherWeaponType.strength) >= otherWeaponType.getStrength(this.strength);
+
+        Pair<Integer, Integer> strengths = getStrengths(otherWeaponType);
+
+        return strengths.getLeft() >= strengths.getRight();
+    }
+
+    private int getBasicStrength(WeaponType weaponType) {
+        return weaponType.getStrength().orElse(0);
+    }
+
+    private int getPotionStrength(WeaponType weaponType, WeaponType otherWeaponType) {
+        if(MAGIC_POTION.equals(weaponType)) {
+            if(otherWeaponType.getStrength().orElse(0) % 2 == 0) {
+                return 10;
+            }
+        }
+        return 0;
     }
 }
