@@ -8,6 +8,7 @@ public class Soldier {
 
     private final String name;
     private final WeaponType weaponType;
+    private int id;
 
     public Soldier(String name) {
         this(name, WeaponType.BARE_FIST);
@@ -29,5 +30,13 @@ public class Soldier {
 
     public boolean attack(Soldier attackee) {
         return this.getWeaponType().isStrongerOrEquallyStrong(attackee.getWeaponType());
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }
